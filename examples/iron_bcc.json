@@ -1,0 +1,76 @@
+{
+  "formula": "Fe",
+  "name": "Iron (alpha-phase)",
+  "crystal_system": "cubic",
+  "space_group_symbol": "Im-3m",
+  "space_group_number": 229,
+  "a": 2.866,
+  "b": 2.866,
+  "c": 2.866,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 90.0,
+  "atomic_positions": [
+    {
+      "element": "Fe",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "wyckoff_position": "2a"
+    },
+    {
+      "element": "Fe",
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5,
+      "wyckoff_position": "2a"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "m-3m",
+  "notes": null,
+  "validation": {
+    "status": "mismatch",
+    "mp_id": "mp-13",
+    "mp_formula": "Fe",
+    "mp_space_group": "Im-3m",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 2.866,
+        "mp": 2.478,
+        "diff": 0.388
+      },
+      "b": {
+        "gemini": 2.866,
+        "mp": 2.478,
+        "diff": 0.388
+      },
+      "c": {
+        "gemini": 2.866,
+        "mp": 4.054,
+        "diff": 1.188
+      }
+    },
+    "flagged_parameters": [
+      "c"
+    ],
+    "message": "Large difference in: c",
+    "electronic_properties": {
+      "band_gap_ev": 0.0,
+      "is_gap_direct": false,
+      "is_metal": true,
+      "gw_recommended": false,
+      "bse_recommended": false,
+      "note": "Metal \u2014 GW/BSE not recommended"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 0.0,
+    "is_gap_direct": false,
+    "is_metal": true,
+    "gw_recommended": false,
+    "bse_recommended": false,
+    "note": "Metal \u2014 GW/BSE not recommended"
+  }
+}

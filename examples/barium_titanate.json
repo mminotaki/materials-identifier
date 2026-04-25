@@ -1,0 +1,95 @@
+{
+  "formula": "BaTiO3",
+  "name": "Barium Titanate",
+  "crystal_system": "tetragonal",
+  "space_group_symbol": "P4mm",
+  "space_group_number": 99,
+  "a": 3.992,
+  "b": 3.992,
+  "c": 4.036,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 90.0,
+  "atomic_positions": [
+    {
+      "element": "Ba",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "wyckoff_position": "1a"
+    },
+    {
+      "element": "Ti",
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.521,
+      "wyckoff_position": "1b"
+    },
+    {
+      "element": "O",
+      "x": 0.5,
+      "y": 0.0,
+      "z": 0.521,
+      "wyckoff_position": "2a"
+    },
+    {
+      "element": "O",
+      "x": 0.0,
+      "y": 0.5,
+      "z": 0.521,
+      "wyckoff_position": "2a"
+    },
+    {
+      "element": "O",
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.979,
+      "wyckoff_position": "1b"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "4mm",
+  "notes": "The crystallographic properties are for the tetragonal ferroelectric phase (P4mm) of Barium Titanate (BaTiO3), stable at ambient conditions (room temperature). Lattice parameters and atomic positions can vary slightly depending on temperature, synthesis method, and specific experimental conditions or computational models. The origin is chosen such that Ba is at (0,0,0).",
+  "validation": {
+    "status": "validated",
+    "mp_id": "mp-5777",
+    "mp_formula": "BaTiO3",
+    "mp_space_group": "Amm2",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 3.992,
+        "mp": 3.983,
+        "diff": 0.009
+      },
+      "b": {
+        "gemini": 3.992,
+        "mp": 4.057,
+        "diff": 0.065
+      },
+      "c": {
+        "gemini": 4.036,
+        "mp": 4.057,
+        "diff": 0.021
+      }
+    },
+    "flagged_parameters": [],
+    "message": "All parameters within tolerance",
+    "electronic_properties": {
+      "band_gap_ev": 2.2929999999999993,
+      "is_gap_direct": false,
+      "is_metal": false,
+      "gw_recommended": true,
+      "bse_recommended": true,
+      "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 2.2929999999999993,
+    "is_gap_direct": false,
+    "is_metal": false,
+    "gw_recommended": true,
+    "bse_recommended": true,
+    "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+  }
+}

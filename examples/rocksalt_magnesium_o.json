@@ -1,0 +1,78 @@
+{
+  "formula": "MgO",
+  "name": "Magnesium Oxide",
+  "crystal_system": "cubic",
+  "space_group_symbol": "Fm-3m",
+  "space_group_number": 225,
+  "a": 4.212,
+  "b": 4.212,
+  "c": 4.212,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 90.0,
+  "atomic_positions": [
+    {
+      "element": "Mg",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "wyckoff_position": "4a"
+    },
+    {
+      "element": "O",
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5,
+      "wyckoff_position": "4b"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "m-3m",
+  "notes": null,
+  "validation": {
+    "status": "mismatch",
+    "mp_id": "mp-1265",
+    "mp_formula": "MgO",
+    "mp_space_group": "Fm-3m",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 4.212,
+        "mp": 2.966,
+        "diff": 1.246
+      },
+      "b": {
+        "gemini": 4.212,
+        "mp": 2.966,
+        "diff": 1.246
+      },
+      "c": {
+        "gemini": 4.212,
+        "mp": 2.966,
+        "diff": 1.246
+      }
+    },
+    "flagged_parameters": [
+      "a",
+      "b",
+      "c"
+    ],
+    "message": "Large difference in: a, b, c",
+    "electronic_properties": {
+      "band_gap_ev": 4.4292,
+      "is_gap_direct": true,
+      "is_metal": false,
+      "gw_recommended": true,
+      "bse_recommended": true,
+      "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 4.4292,
+    "is_gap_direct": true,
+    "is_metal": false,
+    "gw_recommended": true,
+    "bse_recommended": true,
+    "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+  }
+}

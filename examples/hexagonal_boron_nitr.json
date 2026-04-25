@@ -1,0 +1,74 @@
+{
+  "formula": "BN",
+  "name": "Boron Nitride",
+  "crystal_system": "hexagonal",
+  "space_group_symbol": "P6_3/mmc",
+  "space_group_number": 194,
+  "a": 2.504,
+  "b": 2.504,
+  "c": 6.661,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 120.0,
+  "atomic_positions": [
+    {
+      "element": "B",
+      "x": 0.3333,
+      "y": 0.6667,
+      "z": 0.25,
+      "wyckoff_position": "2c"
+    },
+    {
+      "element": "N",
+      "x": 0.3333,
+      "y": 0.6667,
+      "z": 0.75,
+      "wyckoff_position": "2c"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "6/mmm",
+  "notes": "This describes the most common hexagonal polytype (2H-BN).",
+  "validation": {
+    "status": "validated",
+    "mp_id": "mp-604884",
+    "mp_formula": "BN",
+    "mp_space_group": "P-6m2",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 2.504,
+        "mp": 2.502,
+        "diff": 0.002
+      },
+      "b": {
+        "gemini": 2.504,
+        "mp": 2.502,
+        "diff": 0.002
+      },
+      "c": {
+        "gemini": 6.661,
+        "mp": 6.766,
+        "diff": 0.105
+      }
+    },
+    "flagged_parameters": [],
+    "message": "All parameters within tolerance",
+    "electronic_properties": {
+      "band_gap_ev": 4.3683,
+      "is_gap_direct": false,
+      "is_metal": false,
+      "gw_recommended": true,
+      "bse_recommended": true,
+      "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 4.3683,
+    "is_gap_direct": false,
+    "is_metal": false,
+    "gw_recommended": true,
+    "bse_recommended": true,
+    "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+  }
+}

@@ -1,0 +1,6 @@
+materials_identifier/
+.env
+__pycache__/
+*.pyc
+.DS_Store
+presentation/

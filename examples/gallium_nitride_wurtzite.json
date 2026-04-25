@@ -1,0 +1,88 @@
+{
+  "formula": "GaN",
+  "name": "Gallium Nitride (Wurtzite)",
+  "crystal_system": "hexagonal",
+  "space_group_symbol": "P6_3mc",
+  "space_group_number": 186,
+  "a": 3.189,
+  "b": 3.189,
+  "c": 5.185,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 120.0,
+  "atomic_positions": [
+    {
+      "element": "Ga",
+      "x": 0.3333,
+      "y": 0.6667,
+      "z": 0.0,
+      "wyckoff_position": "2b"
+    },
+    {
+      "element": "Ga",
+      "x": 0.6667,
+      "y": 0.3333,
+      "z": 0.5,
+      "wyckoff_position": "2b"
+    },
+    {
+      "element": "N",
+      "x": 0.3333,
+      "y": 0.6667,
+      "z": 0.377,
+      "wyckoff_position": "2b"
+    },
+    {
+      "element": "N",
+      "x": 0.6667,
+      "y": 0.3333,
+      "z": 0.877,
+      "wyckoff_position": "2b"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "6mm",
+  "notes": "Internal parameter for Nitrogen (u_N) is approximately 0.377. Ga position is set at z=0 by choice of origin.",
+  "validation": {
+    "status": "validated",
+    "mp_id": "mp-804",
+    "mp_formula": "GaN",
+    "mp_space_group": "P6_3mc",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 3.189,
+        "mp": 3.189,
+        "diff": 0.0
+      },
+      "b": {
+        "gemini": 3.189,
+        "mp": 3.189,
+        "diff": 0.0
+      },
+      "c": {
+        "gemini": 5.185,
+        "mp": 5.192,
+        "diff": 0.007
+      }
+    },
+    "flagged_parameters": [],
+    "message": "All parameters within tolerance",
+    "electronic_properties": {
+      "band_gap_ev": 1.726499999999999,
+      "is_gap_direct": true,
+      "is_metal": false,
+      "gw_recommended": true,
+      "bse_recommended": true,
+      "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 1.726499999999999,
+    "is_gap_direct": true,
+    "is_metal": false,
+    "gw_recommended": true,
+    "bse_recommended": true,
+    "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "formula": "Si",
+  "name": "Silicon",
+  "crystal_system": "cubic",
+  "space_group_symbol": "Fd-3m",
+  "space_group_number": 227,
+  "a": 5.431,
+  "b": 5.431,
+  "c": 5.431,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 90.0,
+  "atomic_positions": [
+    {
+      "element": "Si",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "wyckoff_position": "8a"
+    },
+    {
+      "element": "Si",
+      "x": 0.25,
+      "y": 0.25,
+      "z": 0.25,
+      "wyckoff_position": "8c"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "m-3m",
+  "notes": null,
+  "validation": {
+    "status": "mismatch",
+    "mp_id": "mp-149",
+    "mp_formula": "Si",
+    "mp_space_group": "Fd-3m",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 5.431,
+        "mp": 3.849,
+        "diff": 1.582
+      },
+      "b": {
+        "gemini": 5.431,
+        "mp": 3.849,
+        "diff": 1.582
+      },
+      "c": {
+        "gemini": 5.431,
+        "mp": 3.849,
+        "diff": 1.582
+      }
+    },
+    "flagged_parameters": [
+      "a",
+      "b",
+      "c"
+    ],
+    "message": "Large difference in: a, b, c",
+    "electronic_properties": {
+      "band_gap_ev": 0.6105,
+      "is_gap_direct": false,
+      "is_metal": false,
+      "gw_recommended": true,
+      "bse_recommended": true,
+      "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 0.6105,
+    "is_gap_direct": false,
+    "is_metal": false,
+    "gw_recommended": true,
+    "bse_recommended": true,
+    "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+  }
+}
