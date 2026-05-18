@@ -40,31 +40,33 @@ And returns a structured JSON file containing the material's crystallographic pr
 
 ## 🚀 Features
 
-- 🧠 **LLM-driven identification** — natural language to crystallographic data via Gemini 2.5 Flash
-- 🌱 **Dataset expansion** — generate strain, rattle, and supercell variants from a single prompt for MLIP training seed datasets
-- 🗂️ **DFT-code agnostic output** — structured JSON compatible with VASP, Quantum ESPRESSO, CP2K
-- ✅ **Materials Project validation** — cross-checks lattice parameters against experimental data
-- ⚡ **GW/BSE readiness** — retrieves band gap, direct/indirect nature, and metallicity
-- 🔁 **Automatic retry logic** — handles API rate limits 
-- 🖥️ **Interactive CLI** — accepts custom descriptions at runtime
+- **LLM-driven identification** — natural language to crystallographic data via Gemini 2.5 Flash
+- **Dataset expansion** — generate strain, rattle, and supercell variants from a single prompt for MLIP training seed datasets
+- **DFT-code agnostic output** — structured JSON compatible with VASP, Quantum ESPRESSO, CP2K
+- **Materials Project validation** — cross-checks lattice parameters against experimental data
+- **GW/BSE readiness** — retrieves band gap, direct/indirect nature, and metallicity
+- **Automatic retry logic** — handles API rate limits 
+- **Interactive CLI** — accepts custom descriptions at runtime
 
 ---
 
 ## 📂 Project Structure
 
 ```
-material-identifier/
+materials-identifier/
 ├── identifier.py        ← main pipeline (call LLM, parse, validate, save)
 ├── prompts.py           ← prompt templates for Gemini
 ├── output_schema.py     ← MaterialStructure dataclass definition
 ├── validator.py         ← Materials Project cross-validation
 ├── expansion.py         ← strain, rattle, supercell variant generation
-├── writers/             ← output writers (JSON canonical, QE optional)
+├── writers/             ← output writers
 │   ├── __init__.py
 │   └── qe.py            ← Quantum ESPRESSO pw.x input writer
-├── requirements.txt     ← dependencies
-├── .env                 ← API keys (not committed to git)
+├── requirements.txt
+├── .env.example         ← API key template
 ├── .gitignore
+├── docs/
+│   └── LLM_Materials_Identification_Framework_Minotaki.pdf
 ├── notebooks/
 │   └── demo.ipynb       ← interactive step-by-step walkthrough
 └── examples/
@@ -82,8 +84,8 @@ material-identifier/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mminotaki/material-identifier.git
-cd material-identifier
+git clone https://github.com/mminotaki/materials-identifier.git
+cd materials-identifier
 ```
 
 ### 2. Create and activate a virtual environment
@@ -101,115 +103,109 @@ pip install -r requirements.txt
 ```
 
 ### 4. Set your API keys
-
+ 
 Get a free Gemini API key at https://aistudio.google.com/apikey
-
+ 
 Get a free Materials Project API key at https://materialsproject.org
-
-Create a `.env` file in the project root:
-
-```
-GEMINI_API_KEY=your-gemini-key-here
-MP_API_KEY=your-materials-project-key-here
-```
-
+ 
+Copy `.env.example` to `.env` and fill in your keys:
+ 
+    cp .env.example .env
+ 
 > ⚠️ Never commit your `.env` file. It is already listed in `.gitignore`.
-
+ 
 ---
 
 ## 🖥️ Usage
-
-**Run all 5 built-in examples:**
-```bash
-python3 identifier.py --run-examples
-```
-
+ 
+**Run all built-in examples:**
+ 
+    python3 identifier.py --run-examples
+ 
 **Identify a custom material:**
-```bash
-python3 identifier.py --description "rocksalt magnesium oxide"
-```
-
+ 
+    python3 identifier.py --description "rocksalt magnesium oxide"
+ 
 **Interactive mode:**
-```bash
-python3 identifier.py
-```
-
-**QE only:**
-
-```bash
-python3 identifier.py --description "wurtzite gallium nitride" --format qe
-```
-
-The QE writer uses SSSP Efficiency pseudopotential references and applies sensible SCF defaults (cutoffs, k-point density, smearing). 
-
+ 
+    python3 identifier.py
+ 
+**Generate Quantum ESPRESSO input:**
+ 
+    python3 identifier.py --description "wurtzite gallium nitride" --format qe
+ 
+The QE writer uses SSSP Efficiency pseudopotential references and applies
+sensible SCF defaults (cutoffs, k-point density, smearing).
+ 
 **Generate a variant dataset for MLIP training:**
-
-```bash
-python3 identifier.py --description "silicon in the diamond cubic structure" \
-    --format qe --expand strain --output examples/silicon_dataset
-```
+ 
+    python3 identifier.py --description "silicon in the diamond cubic structure" \
+        --format qe --expand strain,rattle,supercell \
+        --strain iso,uni,eos \
+        --n-rattle 5 \
+        --supercell 2,2,2 \
+        --output examples/silicon_dataset
+ 
 | Flag | Default | Description |
 |---|---|---|
 | `--expand` | — | Comma-separated list: `strain`, `rattle`, `supercell` |
-| `--strain` | `iso,uni,eos` | Subset of strain modes (isotropic / uniaxial / EOS-style) |
+| `--strain` | `iso,uni,eos` | Strain modes: isotropic / uniaxial / EOS-style |
 | `--n-rattle` | `5` | Number of rattled configurations |
 | `--rattle-amplitude` | `0.05` | Cartesian displacement amplitude (Å) |
 | `--rattle-seed` | `42` | RNG seed for reproducibility |
 | `--supercell` | `2,2,2` | Supercell scaling as `na,nb,nc` |
-
-
+ 
 **Import in your own code:**
-```python
-from identifier import identify_material
-
-material, validation = identify_material(
-    "rocksalt magnesium oxide",
-    output_path="examples/mgo.json"
-)
-print(material.to_json())
-```
-
+ 
+    from identifier import identify_material
+ 
+    material, validation = identify_material(
+        "rocksalt magnesium oxide",
+        output_path="examples/mgo.json"
+    )
+    print(material.to_json())
+ 
 ---
 
+
 ## 📄 Output Format
-
+ 
 Each run produces a structured JSON file:
-
-```json
-{
-  "formula": "GaN",
-  "name": "Gallium Nitride",
-  "crystal_system": "hexagonal",
-  "space_group_symbol": "P6_3mc",
-  "space_group_number": 186,
-  "point_group": "6mm",
-  "a": 3.189, "b": 3.189, "c": 5.185,
-  "alpha": 90.0, "beta": 90.0, "gamma": 120.0,
-  "atomic_positions": [
-    {"element": "Ga", "x": 0.3333, "y": 0.6667, "z": 0.0, "wyckoff_position": "2b"},
-    {"element": "N",  "x": 0.3333, "y": 0.6667, "z": 0.375, "wyckoff_position": "2b"}
-  ],
-  "source": "LLM-inferred",
-  "confidence": "high",
-  "notes": null,
-  "validation": {
-    "status": "validated",
-    "mp_id": "mp-804",
-    "parameter_comparison": {
-      "a": {"gemini": 3.189, "mp": 3.189, "diff": 0.0},
-      "c": {"gemini": 5.185, "mp": 5.192, "diff": 0.007}
+ 
+    {
+      "formula": "GaN",
+      "name": "Gallium Nitride",
+      "crystal_system": "hexagonal",
+      "space_group_symbol": "P6_3mc",
+      "space_group_number": 186,
+      "point_group": "6mm",
+      "a": 3.189, "b": 3.189, "c": 5.185,
+      "alpha": 90.0, "beta": 90.0, "gamma": 120.0,
+      "atomic_positions": [
+        {"element": "Ga", "x": 0.3333, "y": 0.6667, "z": 0.0, "wyckoff_position": "2b"},
+        {"element": "N",  "x": 0.3333, "y": 0.6667, "z": 0.375, "wyckoff_position": "2b"}
+      ],
+      "source": "LLM-inferred",
+      "confidence": "high",
+      "notes": null,
+      "validation": {
+        "status": "validated",
+        "mp_id": "mp-804",
+        "parameter_comparison": {
+          "a": {"gemini": 3.189, "mp": 3.189, "diff": 0.0},
+          "c": {"gemini": 5.185, "mp": 5.192, "diff": 0.007}
+        }
+      },
+      "electronic_properties": {
+        "band_gap_ev": 1.73,
+        "is_gap_direct": true,
+        "is_metal": false,
+        "gw_recommended": true,
+        "bse_recommended": true,
+        "note": "Semiconductor/insulator — GW/BSE applicable"
+      }
     }
-  },
-  "electronic_properties": {
-    "band_gap_ev": 1.56,
-    "is_gap_direct": true,
-    "is_metal": false,
-    "gw_recommended": true,
-    "bse_recommended": true,
-    "note": "Semiconductor/insulator — GW/BSE applicable"
-  }
-}
-```
+ 
 
 
 ---
@@ -237,22 +233,6 @@ This framework was built to identify a single material from a description, but t
 - **Rattled variants** — random Cartesian displacements applied to each atom in real space (not fractional), giving consistent perturbation magnitudes across materials. Seeded for reproducibility.
 - **Supercells** — exact integer expansion of the unit cell. Foundation for any future defect or surface work.
 
-**Usage:**
-
-```bash
-python3 identifier.py \
-    --description "silicon in the diamond cubic structure" \
-    --format qe \
-    --expand strain,rattle,supercell \
-    --strain iso,uni,eos \
-    --n-rattle 5 \
-    --supercell 2,2,2 \
-    --output examples/silicon_dataset
-```
-
-This produces a folder containing one base structure plus 22 variants (4 isotropic + 6 uniaxial + 11 EOS strain points + 5 rattled + 1 supercell), each as a Quantum ESPRESSO `pw.x` input file, plus a `manifest.json` indexing the dataset.
-
-**Where this fits in the MLIP workflow:** this tool produces the *starting structures*. The downstream pipeline — running DFT to compute energies, forces, and stresses, then training the MLIP — is standard practice and out of scope here. 
 
 ## 🔭 Scope and Limitations
 
