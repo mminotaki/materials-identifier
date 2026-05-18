@@ -1,0 +1,298 @@
+{
+  "base_material": {
+    "formula": "Si",
+    "name": "Silicon",
+    "space_group_symbol": "Fd-3m",
+    "space_group_number": 227
+  },
+  "expansions_applied": [
+    "strain"
+  ],
+  "expand_config": {
+    "strain_modes": [
+      "iso",
+      "uni",
+      "eos"
+    ],
+    "n_rattle": null,
+    "rattle_amplitude": null,
+    "rattle_seed": null,
+    "supercell": null
+  },
+  "n_variants": 21,
+  "variants": [
+    {
+      "filename": "Si_strain_iso_-0.02.in",
+      "transformation": "isotropic strain -2.00%",
+      "lattice": {
+        "a": 5.32238,
+        "b": 5.32238,
+        "c": 5.32238,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_iso_-0.01.in",
+      "transformation": "isotropic strain -1.00%",
+      "lattice": {
+        "a": 5.37669,
+        "b": 5.37669,
+        "c": 5.37669,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_iso_+0.01.in",
+      "transformation": "isotropic strain +1.00%",
+      "lattice": {
+        "a": 5.48531,
+        "b": 5.48531,
+        "c": 5.48531,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_iso_+0.02.in",
+      "transformation": "isotropic strain +2.00%",
+      "lattice": {
+        "a": 5.53962,
+        "b": 5.53962,
+        "c": 5.53962,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_uni_a_-0.02.in",
+      "transformation": "uniaxial strain a=-2.00%",
+      "lattice": {
+        "a": 5.32238,
+        "b": 5.431,
+        "c": 5.431,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_uni_a_+0.02.in",
+      "transformation": "uniaxial strain a=+2.00%",
+      "lattice": {
+        "a": 5.53962,
+        "b": 5.431,
+        "c": 5.431,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_uni_b_-0.02.in",
+      "transformation": "uniaxial strain b=-2.00%",
+      "lattice": {
+        "a": 5.431,
+        "b": 5.32238,
+        "c": 5.431,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_uni_b_+0.02.in",
+      "transformation": "uniaxial strain b=+2.00%",
+      "lattice": {
+        "a": 5.431,
+        "b": 5.53962,
+        "c": 5.431,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_uni_c_-0.02.in",
+      "transformation": "uniaxial strain c=-2.00%",
+      "lattice": {
+        "a": 5.431,
+        "b": 5.431,
+        "c": 5.32238,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_uni_c_+0.02.in",
+      "transformation": "uniaxial strain c=+2.00%",
+      "lattice": {
+        "a": 5.431,
+        "b": 5.431,
+        "c": 5.53962,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_-0.05.in",
+      "transformation": "EOS strain -5.00%",
+      "lattice": {
+        "a": 5.15945,
+        "b": 5.15945,
+        "c": 5.15945,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_-0.04.in",
+      "transformation": "EOS strain -4.00%",
+      "lattice": {
+        "a": 5.21376,
+        "b": 5.21376,
+        "c": 5.21376,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_-0.03.in",
+      "transformation": "EOS strain -3.00%",
+      "lattice": {
+        "a": 5.26807,
+        "b": 5.26807,
+        "c": 5.26807,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_-0.02.in",
+      "transformation": "EOS strain -2.00%",
+      "lattice": {
+        "a": 5.32238,
+        "b": 5.32238,
+        "c": 5.32238,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_-0.01.in",
+      "transformation": "EOS strain -1.00%",
+      "lattice": {
+        "a": 5.37669,
+        "b": 5.37669,
+        "c": 5.37669,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_+0.00.in",
+      "transformation": "EOS strain +0.00%",
+      "lattice": {
+        "a": 5.431,
+        "b": 5.431,
+        "c": 5.431,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_+0.01.in",
+      "transformation": "EOS strain +1.00%",
+      "lattice": {
+        "a": 5.48531,
+        "b": 5.48531,
+        "c": 5.48531,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_+0.02.in",
+      "transformation": "EOS strain +2.00%",
+      "lattice": {
+        "a": 5.53962,
+        "b": 5.53962,
+        "c": 5.53962,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_+0.03.in",
+      "transformation": "EOS strain +3.00%",
+      "lattice": {
+        "a": 5.59393,
+        "b": 5.59393,
+        "c": 5.59393,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_+0.04.in",
+      "transformation": "EOS strain +4.00%",
+      "lattice": {
+        "a": 5.64824,
+        "b": 5.64824,
+        "c": 5.64824,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    },
+    {
+      "filename": "Si_strain_eos_+0.05.in",
+      "transformation": "EOS strain +5.00%",
+      "lattice": {
+        "a": 5.7025500000000005,
+        "b": 5.7025500000000005,
+        "c": 5.7025500000000005,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 2
+    }
+  ]
+}

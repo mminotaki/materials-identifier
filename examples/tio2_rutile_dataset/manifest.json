@@ -1,0 +1,382 @@
+{
+  "base_material": {
+    "formula": "TiO2",
+    "name": "Titanium Dioxide (Rutile)",
+    "space_group_symbol": "P4_2/mnm",
+    "space_group_number": 136
+  },
+  "expansions_applied": [
+    "strain",
+    "rattle",
+    "supercell"
+  ],
+  "expand_config": {
+    "strain_modes": [
+      "iso",
+      "uni",
+      "eos"
+    ],
+    "n_rattle": 5,
+    "rattle_amplitude": 0.05,
+    "rattle_seed": 42,
+    "supercell": [
+      2,
+      2,
+      2
+    ]
+  },
+  "n_variants": 27,
+  "variants": [
+    {
+      "filename": "TiO2_strain_iso_-0.02.in",
+      "transformation": "isotropic strain -2.00%",
+      "lattice": {
+        "a": 4.502120000000001,
+        "b": 4.502120000000001,
+        "c": 2.8988400000000003,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_iso_-0.01.in",
+      "transformation": "isotropic strain -1.00%",
+      "lattice": {
+        "a": 4.54806,
+        "b": 4.54806,
+        "c": 2.92842,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_iso_+0.01.in",
+      "transformation": "isotropic strain +1.00%",
+      "lattice": {
+        "a": 4.63994,
+        "b": 4.63994,
+        "c": 2.9875800000000003,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_iso_+0.02.in",
+      "transformation": "isotropic strain +2.00%",
+      "lattice": {
+        "a": 4.68588,
+        "b": 4.68588,
+        "c": 3.01716,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_uni_a_-0.02.in",
+      "transformation": "uniaxial strain a=-2.00%",
+      "lattice": {
+        "a": 4.502120000000001,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_uni_a_+0.02.in",
+      "transformation": "uniaxial strain a=+2.00%",
+      "lattice": {
+        "a": 4.68588,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_uni_b_-0.02.in",
+      "transformation": "uniaxial strain b=-2.00%",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.502120000000001,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_uni_b_+0.02.in",
+      "transformation": "uniaxial strain b=+2.00%",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.68588,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_uni_c_-0.02.in",
+      "transformation": "uniaxial strain c=-2.00%",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.8988400000000003,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_uni_c_+0.02.in",
+      "transformation": "uniaxial strain c=+2.00%",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 3.01716,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_-0.05.in",
+      "transformation": "EOS strain -5.00%",
+      "lattice": {
+        "a": 4.3643,
+        "b": 4.3643,
+        "c": 2.8101000000000003,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_-0.04.in",
+      "transformation": "EOS strain -4.00%",
+      "lattice": {
+        "a": 4.41024,
+        "b": 4.41024,
+        "c": 2.83968,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_-0.03.in",
+      "transformation": "EOS strain -3.00%",
+      "lattice": {
+        "a": 4.45618,
+        "b": 4.45618,
+        "c": 2.86926,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_-0.02.in",
+      "transformation": "EOS strain -2.00%",
+      "lattice": {
+        "a": 4.502120000000001,
+        "b": 4.502120000000001,
+        "c": 2.8988400000000003,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_-0.01.in",
+      "transformation": "EOS strain -1.00%",
+      "lattice": {
+        "a": 4.54806,
+        "b": 4.54806,
+        "c": 2.92842,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_+0.00.in",
+      "transformation": "EOS strain +0.00%",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_+0.01.in",
+      "transformation": "EOS strain +1.00%",
+      "lattice": {
+        "a": 4.63994,
+        "b": 4.63994,
+        "c": 2.9875800000000003,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_+0.02.in",
+      "transformation": "EOS strain +2.00%",
+      "lattice": {
+        "a": 4.68588,
+        "b": 4.68588,
+        "c": 3.01716,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_+0.03.in",
+      "transformation": "EOS strain +3.00%",
+      "lattice": {
+        "a": 4.731820000000001,
+        "b": 4.731820000000001,
+        "c": 3.0467400000000002,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_+0.04.in",
+      "transformation": "EOS strain +4.00%",
+      "lattice": {
+        "a": 4.777760000000001,
+        "b": 4.777760000000001,
+        "c": 3.0763200000000004,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_strain_eos_+0.05.in",
+      "transformation": "EOS strain +5.00%",
+      "lattice": {
+        "a": 4.8237000000000005,
+        "b": 4.8237000000000005,
+        "c": 3.1059,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_rattle_001.in",
+      "transformation": "rattled amplitude=0.05 A, seed=42, index=1",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_rattle_002.in",
+      "transformation": "rattled amplitude=0.05 A, seed=42, index=2",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_rattle_003.in",
+      "transformation": "rattled amplitude=0.05 A, seed=42, index=3",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_rattle_004.in",
+      "transformation": "rattled amplitude=0.05 A, seed=42, index=4",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_rattle_005.in",
+      "transformation": "rattled amplitude=0.05 A, seed=42, index=5",
+      "lattice": {
+        "a": 4.594,
+        "b": 4.594,
+        "c": 2.958,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 6
+    },
+    {
+      "filename": "TiO2_supercell_2x2x2.in",
+      "transformation": "supercell 2x2x2",
+      "lattice": {
+        "a": 9.188,
+        "b": 9.188,
+        "c": 5.916,
+        "alpha": 90.0,
+        "beta": 90.0,
+        "gamma": 90.0
+      },
+      "n_atoms": 48
+    }
+  ]
+}

@@ -41,6 +41,7 @@ And returns a structured JSON file containing the material's crystallographic pr
 ## 🚀 Features
 
 - 🧠 **LLM-driven identification** — natural language to crystallographic data via Gemini 2.5 Flash
+- 🌱 **Dataset expansion** — generate strain, rattle, and supercell variants from a single prompt for MLIP training seed datasets
 - 🗂️ **DFT-code agnostic output** — structured JSON compatible with VASP, Quantum ESPRESSO, CP2K
 - ✅ **Materials Project validation** — cross-checks lattice parameters against experimental data
 - ⚡ **GW/BSE readiness** — retrieves band gap, direct/indirect nature, and metallicity
@@ -57,6 +58,10 @@ material-identifier/
 ├── prompts.py           ← prompt templates for Gemini
 ├── output_schema.py     ← MaterialStructure dataclass definition
 ├── validator.py         ← Materials Project cross-validation
+├── expansion.py         ← strain, rattle, supercell variant generation
+├── writers/             ← output writers (JSON canonical, QE optional)
+│   ├── __init__.py
+│   └── qe.py            ← Quantum ESPRESSO pw.x input writer
 ├── requirements.txt     ← dependencies
 ├── .env                 ← API keys (not committed to git)
 ├── .gitignore
@@ -129,6 +134,30 @@ python3 identifier.py --description "rocksalt magnesium oxide"
 python3 identifier.py
 ```
 
+**QE only:**
+
+```bash
+python3 identifier.py --description "wurtzite gallium nitride" --format qe
+```
+
+The QE writer uses SSSP Efficiency pseudopotential references and applies sensible SCF defaults (cutoffs, k-point density, smearing). 
+
+**Generate a variant dataset for MLIP training:**
+
+```bash
+python3 identifier.py --description "silicon in the diamond cubic structure" \
+    --format qe --expand strain --output examples/silicon_dataset
+```
+| Flag | Default | Description |
+|---|---|---|
+| `--expand` | — | Comma-separated list: `strain`, `rattle`, `supercell` |
+| `--strain` | `iso,uni,eos` | Subset of strain modes (isotropic / uniaxial / EOS-style) |
+| `--n-rattle` | `5` | Number of rattled configurations |
+| `--rattle-amplitude` | `0.05` | Cartesian displacement amplitude (Å) |
+| `--rattle-seed` | `42` | RNG seed for reproducibility |
+| `--supercell` | `2,2,2` | Supercell scaling as `na,nb,nc` |
+
+
 **Import in your own code:**
 ```python
 from identifier import identify_material
@@ -198,6 +227,32 @@ Each run produces a structured JSON file:
 Full output files are available in the `examples/` folder.
 
 ---
+---
+
+## 🌱 Seeding MLIP Training Datasets
+
+This framework was built to identify a single material from a description, but the same machinery can populate starting structures for high-throughput DFT workflows. Machine-learned interatomic potentials (MLIPs) such as MACE, NequIP, or Allegro require diverse DFT training data — different lattice strains, perturbed atomic positions, and larger cells. Assembling these starting structures by hand is a slow step. The `expansion.py` module turns a single identified structure into a folder of variants ready for DFT:
+
+- **Strain variants** — isotropic, uniaxial, and dense EOS-style grids for sampling volumetric and anisotropic mechanical response (bulk modulus, elastic constants, equation of state).
+- **Rattled variants** — random Cartesian displacements applied to each atom in real space (not fractional), giving consistent perturbation magnitudes across materials. Seeded for reproducibility.
+- **Supercells** — exact integer expansion of the unit cell. Foundation for any future defect or surface work.
+
+**Usage:**
+
+```bash
+python3 identifier.py \
+    --description "silicon in the diamond cubic structure" \
+    --format qe \
+    --expand strain,rattle,supercell \
+    --strain iso,uni,eos \
+    --n-rattle 5 \
+    --supercell 2,2,2 \
+    --output examples/silicon_dataset
+```
+
+This produces a folder containing one base structure plus 22 variants (4 isotropic + 6 uniaxial + 11 EOS strain points + 5 rattled + 1 supercell), each as a Quantum ESPRESSO `pw.x` input file, plus a `manifest.json` indexing the dataset.
+
+**Where this fits in the MLIP workflow:** this tool produces the *starting structures*. The downstream pipeline — running DFT to compute energies, forces, and stresses, then training the MLIP — is standard practice and out of scope here. 
 
 ## 🔭 Scope and Limitations
 
@@ -230,6 +285,10 @@ Full output files are available in the `examples/` folder.
 | `pymatgen` | Crystal structure objects and analysis |
 
 ---
+
+## Presentation
+A slide deck summarizing the framework design and results is available
+in [`docs/presentation.pdf`](docs/LLM_Materials_Identification_Framework_Minotaki.pdf)
 
 ## ⚖️ License
 

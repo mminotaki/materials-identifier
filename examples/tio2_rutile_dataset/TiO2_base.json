@@ -1,0 +1,106 @@
+{
+  "formula": "TiO2",
+  "name": "Titanium Dioxide (Rutile)",
+  "crystal_system": "tetragonal",
+  "space_group_symbol": "P4_2/mnm",
+  "space_group_number": 136,
+  "a": 4.594,
+  "b": 4.594,
+  "c": 2.958,
+  "alpha": 90.0,
+  "beta": 90.0,
+  "gamma": 90.0,
+  "atomic_positions": [
+    {
+      "element": "Ti",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "wyckoff_position": "2a"
+    },
+    {
+      "element": "Ti",
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5,
+      "wyckoff_position": "2a"
+    },
+    {
+      "element": "O",
+      "x": 0.305,
+      "y": 0.305,
+      "z": 0.0,
+      "wyckoff_position": "4f"
+    },
+    {
+      "element": "O",
+      "x": 0.695,
+      "y": 0.695,
+      "z": 0.0,
+      "wyckoff_position": "4f"
+    },
+    {
+      "element": "O",
+      "x": 0.195,
+      "y": 0.805,
+      "z": 0.5,
+      "wyckoff_position": "4f"
+    },
+    {
+      "element": "O",
+      "x": 0.805,
+      "y": 0.195,
+      "z": 0.5,
+      "wyckoff_position": "4f"
+    }
+  ],
+  "source": "LLM-inferred",
+  "confidence": "high",
+  "point_group": "4/mmm",
+  "notes": null,
+  "validation": {
+    "status": "mismatch",
+    "mp_id": "mp-390",
+    "mp_formula": "TiO2",
+    "mp_space_group": "I4_1/amd",
+    "parameter_comparison": {
+      "a": {
+        "gemini": 4.594,
+        "mp": 3.783,
+        "diff": 0.811
+      },
+      "b": {
+        "gemini": 4.594,
+        "mp": 3.783,
+        "diff": 0.811
+      },
+      "c": {
+        "gemini": 2.958,
+        "mp": 5.501,
+        "diff": 2.543
+      }
+    },
+    "flagged_parameters": [
+      "a",
+      "b",
+      "c"
+    ],
+    "message": "Large difference in: a, b, c",
+    "electronic_properties": {
+      "band_gap_ev": 2.0586,
+      "is_gap_direct": false,
+      "is_metal": false,
+      "gw_recommended": true,
+      "bse_recommended": true,
+      "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+    }
+  },
+  "electronic_properties": {
+    "band_gap_ev": 2.0586,
+    "is_gap_direct": false,
+    "is_metal": false,
+    "gw_recommended": true,
+    "bse_recommended": true,
+    "note": "Semiconductor/insulator \u2014 GW/BSE applicable"
+  }
+}

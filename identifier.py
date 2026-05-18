@@ -18,6 +18,14 @@ from google import genai
 from prompts import build_prompt
 from output_schema import MaterialStructure, AtomicPosition
 from validator import validate_with_mp
+from writers import write_qe_input
+from expansion import (
+    generate_isotropic_strain,
+    generate_uniaxial_strain,
+    generate_eos_strain,
+    generate_rattled,
+    make_supercell,
+)
 
 load_dotenv()
 
@@ -97,7 +105,7 @@ def is_valid_material(user_description: str) -> bool:
                 print("  Pre-check unavailable — proceeding anyway")
                 return True
 
-def identify_material(user_description: str, output_path: str = None):
+def identify_material(user_description: str, output_path: str = None, formats: list[str] = None):
     """Full pipeline: description -> Gemini -> parsed structure -> validated -> saved."""
     print(f"\nIdentifying: '{user_description}'...")
 
@@ -139,12 +147,149 @@ def identify_material(user_description: str, output_path: str = None):
     # so they are included in the saved JSON file
     material.validation = validation
     material.electronic_properties = validation.get("electronic_properties")
+    
+    # Default to JSON only if no formats specified — preserves original behaviour
+    if formats is None:
+        formats = ["json"]
 
     if output_path:
-        material.save(output_path)
+        base, _ = os.path.splitext(output_path)
+
+        if "json" in formats:
+            json_path = base + ".json"
+            material.save(json_path)
+
+        if "qe" in formats:
+            qe_path = base + ".in"
+            write_qe_input(material, qe_path, prefix=material.formula)
 
     return material, validation
 
+def _variant_filename(material, formula: str) -> str:
+    """
+    Build a clean, sortable filename suffix from a variant's notes field.
+    Maps the human-readable note to a filesystem-safe slug.
+    """
+    notes = (material.notes or "").lower()
+
+    # Strain variants
+    if "isotropic strain" in notes:
+        # "isotropic strain -2.00%" -> "strain_iso_-0.02"
+        val = float(notes.split()[-1].rstrip("%")) / 100.0
+        return f"{formula}_strain_iso_{val:+.2f}"
+    if "uniaxial strain" in notes:
+        # "uniaxial strain a=+2.00%" -> "strain_uni_a_+0.02"
+        axis = notes.split("strain")[1].split("=")[0].strip()
+        val = float(notes.split("=")[1].rstrip("%")) / 100.0
+        return f"{formula}_strain_uni_{axis}_{val:+.2f}"
+    if "eos strain" in notes:
+        # "EOS strain +5.00%" -> "strain_eos_+0.05"
+        val = float(notes.split()[-1].rstrip("%")) / 100.0
+        return f"{formula}_strain_eos_{val:+.2f}"
+    if "rattled" in notes:
+        # "rattled amplitude=0.05 A, seed=42, index=3" -> "rattle_003"
+        idx = int(notes.split("index=")[1])
+        return f"{formula}_rattle_{idx:03d}"
+    if "supercell" in notes:
+        # "supercell 2x2x2" -> "supercell_2x2x2"
+        size = notes.split()[-1]
+        return f"{formula}_supercell_{size}"
+
+    # Fallback — shouldn't happen, but better than crashing
+    return f"{formula}_variant"
+
+
+def expand_and_write(base_material, output_folder: str, expand_config: dict,
+                     formats: list[str]) -> None:
+    """
+    Generate expanded variants from a base material and write them to disk
+    as a folder of QE input files plus a manifest.
+
+    Args:
+        base_material:    MaterialStructure from identify_material
+        output_folder:    path to a folder (created if missing)
+        expand_config:    dict from CLI parsing with keys:
+                          expansions, strain_modes, n_rattle,
+                          rattle_amplitude, rattle_seed, supercell
+        formats:          list of output formats. Note: variants are only
+                          written as QE. JSON is reserved for the base.
+    """
+    os.makedirs(output_folder, exist_ok=True)
+    formula = base_material.formula
+    expansions = expand_config["expansions"]
+
+    # --- Write base structure ---
+    base_stem = os.path.join(output_folder, f"{formula}_base")
+    if "json" in formats:
+        base_material.save(base_stem + ".json")
+    if "qe" in formats:
+        write_qe_input(base_material, base_stem + ".in", prefix=formula)
+
+    # --- Collect all variants ---
+    variants = []
+
+    if "strain" in expansions:
+        strain_modes = expand_config["strain_modes"]
+        if "iso" in strain_modes:
+            variants.extend(generate_isotropic_strain(base_material))
+        if "uni" in strain_modes:
+            variants.extend(generate_uniaxial_strain(base_material))
+        if "eos" in strain_modes:
+            variants.extend(generate_eos_strain(base_material))
+
+    if "rattle" in expansions:
+        variants.extend(generate_rattled(
+            base_material,
+            amplitude=expand_config["rattle_amplitude"],
+            n=expand_config["n_rattle"],
+            seed=expand_config["rattle_seed"],
+        ))
+
+    if "supercell" in expansions:
+        variants.append(make_supercell(
+            base_material,
+            scaling=expand_config["supercell"],
+        ))
+
+    # --- Write each variant as QE only ---
+    manifest_entries = []
+    for v in variants:
+        stem = _variant_filename(v, formula)
+        path = os.path.join(output_folder, stem + ".in")
+        write_qe_input(v, path, prefix=formula)
+        manifest_entries.append({
+            "filename": stem + ".in",
+            "transformation": v.notes,
+            "lattice": {"a": v.a, "b": v.b, "c": v.c,
+                        "alpha": v.alpha, "beta": v.beta, "gamma": v.gamma},
+            "n_atoms": len(v.atomic_positions),
+        })
+
+    # --- Write manifest ---
+    manifest = {
+        "base_material": {
+            "formula": base_material.formula,
+            "name": base_material.name,
+            "space_group_symbol": base_material.space_group_symbol,
+            "space_group_number": base_material.space_group_number,
+        },
+        "expansions_applied": expansions,
+        "expand_config": {
+            "strain_modes": expand_config["strain_modes"] if "strain" in expansions else None,
+            "n_rattle": expand_config["n_rattle"] if "rattle" in expansions else None,
+            "rattle_amplitude": expand_config["rattle_amplitude"] if "rattle" in expansions else None,
+            "rattle_seed": expand_config["rattle_seed"] if "rattle" in expansions else None,
+            "supercell": list(expand_config["supercell"]) if "supercell" in expansions else None,
+        },
+        "n_variants": len(variants),
+        "variants": manifest_entries,
+    }
+    manifest_path = os.path.join(output_folder, "manifest.json")
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+
+    print(f"Wrote dataset to {output_folder}/")
+    print(f"  Base structure + {len(variants)} variants + manifest.json")
 
 if __name__ == "__main__":
     import argparse
@@ -170,24 +315,134 @@ if __name__ == "__main__":
         help="Run all 5 built-in example materials"
     )
 
+    parser.add_argument(
+        "--format",
+        type=str,
+        default="json",
+        help="Comma-separated output formats: json, qe, or json,qe. Default: json"
+    )
+
+
+    parser.add_argument(
+        "--expand",
+        type=str,
+        default=None,
+        help=(
+            "Generate expanded variants for MLIP training datasets. "
+            "Comma-separated list of: strain, rattle, supercell. "
+            "When set, --output is treated as a folder."
+        )
+    )
+    parser.add_argument(
+        "--strain",
+        type=str,
+        default="iso,uni,eos",
+        help=(
+            "Strain modes when --expand includes 'strain'. "
+            "Comma-separated subset of: iso, uni, eos. Default: all three."
+        )
+    )
+    parser.add_argument(
+        "--n-rattle",
+        type=int,
+        default=5,
+        help="Number of rattled variants when --expand includes 'rattle'. Default: 5"
+    )
+    parser.add_argument(
+        "--rattle-amplitude",
+        type=float,
+        default=0.05,
+        help="Cartesian rattle amplitude in Angstroms. Default: 0.05"
+    )
+    parser.add_argument(
+        "--rattle-seed",
+        type=int,
+        default=42,
+        help="RNG seed for rattle reproducibility. Default: 42"
+    )
+    parser.add_argument(
+        "--supercell",
+        type=str,
+        default="2,2,2",
+        help="Supercell scaling when --expand includes 'supercell'. Format: na,nb,nc. Default: 2,2,2"
+    )
+
     args = parser.parse_args()
 
+    args = parser.parse_args()
+
+    # --- Format validation ---
+    formats = [f.strip().lower() for f in args.format.split(",")]
+    valid_formats = {"json", "qe"}
+    invalid = set(formats) - valid_formats
+    if invalid:
+        parser.error(f"Unknown format(s): {invalid}. Choose from {valid_formats}.")
+
+    # --- Expansion validation ---
+    expansions = []
+    if args.expand:
+        expansions = [e.strip().lower() for e in args.expand.split(",")]
+        valid_exp = {"strain", "rattle", "supercell"}
+        invalid_exp = set(expansions) - valid_exp
+        if invalid_exp:
+            parser.error(f"Unknown expansion(s): {invalid_exp}. Choose from {valid_exp}.")
+
+    # --- Strain mode validation ---
+    strain_modes = [s.strip().lower() for s in args.strain.split(",")]
+    valid_strain = {"iso", "uni", "eos"}
+    invalid_strain = set(strain_modes) - valid_strain
+    if invalid_strain:
+        parser.error(f"Unknown strain mode(s): {invalid_strain}. Choose from {valid_strain}.")
+
+    # --- Supercell parsing ---
+    try:
+        supercell_tuple = tuple(int(n) for n in args.supercell.split(","))
+        if len(supercell_tuple) != 3 or any(n < 1 for n in supercell_tuple):
+            raise ValueError
+    except ValueError:
+        parser.error(f"--supercell must be three positive integers like '2,2,2', got '{args.supercell}'")
+
+    # Bundle expansion args into a dict for cleaner passing
+    expand_config = {
+        "expansions": expansions,
+        "strain_modes": strain_modes,
+        "n_rattle": args.n_rattle,
+        "rattle_amplitude": args.rattle_amplitude,
+        "rattle_seed": args.rattle_seed,
+        "supercell": supercell_tuple,
+    }
+    
     if args.description:
         # User provided a custom description
-        output_path = args.output or f"examples/{args.description[:20].replace(' ', '_')}.json"
-        identify_material(args.description, output_path=output_path)
+        if expansions:
+            # Expansion mode: --output is a folder
+            output_folder = args.output or f"examples/{args.description[:20].replace(' ', '_')}_dataset"
+            material, _ = identify_material(args.description, output_path=None, formats=formats)
+            if material is not None:
+                expand_and_write(material, output_folder, expand_config, formats)
+        else:
+            # Standard single-file mode (unchanged behaviour)
+            output_path = args.output or f"examples/{args.description[:20].replace(' ', '_')}.json"
+            identify_material(args.description, output_path=output_path, formats=formats)
 
     elif args.run_examples:
         # Run all built-in examples
         examples = [
-            ("silicon in the diamond cubic structure",      "examples/silicon_diamond.json"),
-            ("face-centred cubic copper",                   "examples/copper_fcc.json"),
-            ("a perovskite oxide with titanium and barium", "examples/barium_titanate.json"),
-            ("wurtzite gallium nitride",                    "examples/gallium_nitride_wurtzite.json"),
-            ("iron in the body-centred cubic structure",    "examples/iron_bcc.json"),
+            ("silicon in the diamond cubic structure",      "examples/silicon_diamond"),
+            ("face-centred cubic copper",                   "examples/copper_fcc"),
+            ("a perovskite oxide with titanium and barium", "examples/barium_titanate"),
+            ("wurtzite gallium nitride",                    "examples/gallium_nitride_wurtzite"),
+            ("iron in the body-centred cubic structure",    "examples/iron_bcc"),
         ]
-        for description, path in examples:
-            identify_material(description, output_path=path)
+        for description, base_path in examples:
+            if expansions:
+                # Folder per example
+                material, _ = identify_material(description, output_path=None, formats=formats)
+                if material is not None:
+                    expand_and_write(material, base_path + "_dataset", expand_config, formats)
+            else:
+                # Standard single-file mode
+                identify_material(description, output_path=base_path + ".json", formats=formats)
             print("-" * 50)
             time.sleep(15)
 
@@ -195,6 +450,11 @@ if __name__ == "__main__":
         # Interactive mode
         print("Material Identifier — enter a material description or use --help")
         description = input("Description: ")
-        output_path = f"examples/{description[:20].replace(' ', '_')}.json"
-        identify_material(description, output_path=output_path)
-
+        if expansions:
+            output_folder = f"examples/{description[:20].replace(' ', '_')}_dataset"
+            material, _ = identify_material(description, output_path=None, formats=formats)
+            if material is not None:
+                expand_and_write(material, output_folder, expand_config, formats)
+        else:
+            output_path = f"examples/{description[:20].replace(' ', '_')}.json"
+            identify_material(description, output_path=output_path, formats=formats)
